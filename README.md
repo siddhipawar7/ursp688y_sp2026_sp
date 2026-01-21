@@ -134,7 +134,7 @@ Make a single slide to pitch your project idea to your classmates. Consider incl
 3. Potential data sources and key steps in analysis (high-level pseudocode)
 4. Major limitations
 
-##### 1. Short Proposal (Due March 27th; 500–1,000 words)
+##### 1. Short Proposal (Due March 26th; 500–1,000 words)
 
 Write a short proposal with the following sections outlining your proposed project:
 
