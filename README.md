@@ -30,7 +30,7 @@ Students should submit all assignments as pull requests to this repository. All 
 |[Week 10: Apr 9](#april-9-week-10)|Spatial Visualization|***In-Person***|Exercise 3||
 |[Week 11: Apr 16](#april-16-week-11)|Dashboards|[Zoom](https://umd.zoom.us/j/95813351606)|Exercise 3 Code Review||
 |[Week 12: Apr 23](#april-23-week-12)|Machine Learning|[Zoom](https://umd.zoom.us/j/95813351606)||Noah|
-|[Week 13: Apr 30](#april-30-week-13)|Final Project Code Review Workshop|[Zoom](https://umd.zoom.us/j/95813351606)|Exercise 4||
+|[Week 13: Apr 30](#april-30-week-13)|Final Project Code Review Workshop|[Zoom](https://umd.zoom.us/j/95813351606)|Exercise 4|Joseph|
 |[Week 14: May 7](#may-7-week-14)|Final Project Presentations|***In-Person***|Final Project Slides|-|
 |[Week 15: May 14](#may-14-week-15)|Final Project Due|***NO CLASS***|Final Project Report|-|
 
