@@ -1,0 +1,4 @@
+*.csv
+*.geoparquet
+geocode_inputs
+geocode_outputs
