@@ -61,6 +61,80 @@ eea_color = 'blue'
 other_color = 'red'
 
 
+##########################################
+# Define generalized chart and map objects
+##########################################
+def base_bar_chart(n=10, head=True, tail=False):
+    # Filter based on inputs
+    filtered_bikes_df = demo11.filter_bikes(
+        bikes_gdf, 
+        {
+            bike_type_field: input.bike_type(),
+            docking_status_field: input.docking_status(),
+        }
+    )
+    # Attach bikes to neighborhoods
+    bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df).reset_index()
+
+    # Get head or tail
+    if tail:
+        bikes_per_nbhd_df = bikes_per_nbhd_df.tail(n)
+    elif head:
+        bikes_per_nbhd_df = bikes_per_nbhd_df.head(n)
+
+    # Plot 10 highest
+    fig = px.bar(
+        bikes_per_nbhd_df,
+        x='nbhd', 
+        y='bikes', 
+        color='eea',
+        color_continuous_scale=[other_color, eea_color],
+    )
+    fig.update_layout(coloraxis_showscale=False)
+    fig.update_xaxes(tickangle=-90)
+    return fig
+
+def base_map():
+    # Filter based on inputs
+    filtered_bikes_df = demo11.filter_bikes(
+        bikes_gdf, 
+        {
+            bike_type_field: input.bike_type(),
+            docking_status_field: input.docking_status(),
+        }
+    )
+    
+    # Attach bikes to neighborhoods
+    bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df)
+    nbhds_with_bike_counts_gdf = demo11.attach_counts_to_nbhd_points(bikes_per_nbhd_df, nbhds_gdf) 
+
+    # Build map
+    m = Map(
+        basemap=basemaps.CartoDB.Positron,
+        center=(mid_lat, mid_lon), 
+        zoom=12,
+        scroll_wheel_zoom=True,
+    )  
+    # Add circle markers
+    multiplier = 0.2
+    for nbhd in nbhds_with_bike_counts_gdf.itertuples():
+        circle_marker = CircleMarker()
+        lat = nbhd.geometry.y
+        lon = nbhd.geometry.x
+        circle_marker.location = (lat, lon)
+        radius = demo11.int_at_least_one(nbhd.bikes * multiplier)
+        circle_marker.radius = radius
+        if nbhd.eea == 1:
+            circle_marker.color = eea_color
+        else:
+            circle_marker.color = other_color
+        circle_marker.fill_color = "#ffffff00"
+        circle_marker.weight=1
+        m.add(circle_marker)
+        
+    return m
+
+
 ###########
 # Define ui
 ###########
@@ -84,129 +158,20 @@ with ui.sidebar():
 with ui.layout_columns():
 
     with ui.card():
-
         @render_plotly
         def bar_chart_ten_most():
-            # Filter based on inputs
-            filtered_bikes_df = demo11.filter_bikes(
-                bikes_gdf, 
-                {
-                    bike_type_field: input.bike_type(),
-                    docking_status_field: input.docking_status(),
-                }
-            )
-            # Attach bikes to neighborhoods
-            bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df).reset_index()
+            return base_bar_chart(n=10, head=True)
 
-            # Plot 10 highest
-            fig = px.bar(
-                bikes_per_nbhd_df, 
-                x='nbhd', 
-                y='bikes', 
-                color='eea',
-                color_continuous_scale=[other_color, eea_color],
-            )
-            fig.update_layout(coloraxis_showscale=False)
-            fig.update_xaxes(tickangle=-90)
-            return fig
-
-    # with ui.card():
-
-    #     @render_plotly
-    #     def bar_chart_ten_most():
-    #         # Filter based on inputs
-    #         filtered_bikes_df = demo11.filter_bikes(
-    #             bikes_gdf, 
-    #             {
-    #                 bike_type_field: input.bike_type(),
-    #                 docking_status_field: input.docking_status(),
-    #             }
-    #         )
-    #         # Attach bikes to neighborhoods
-    #         bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df).reset_index()
-
-    #         # Plot 10 highest
-    #         fig = px.bar(
-    #             bikes_per_nbhd_df.head(10), 
-    #             x='nbhd', 
-    #             y='bikes', 
-    #             color='eea',
-    #             color_continuous_scale=[other_color, eea_color],
-    #         )
-    #         fig.update_layout(coloraxis_showscale=False)
-    #         fig.update_xaxes(tickangle=-90)
-    #         return fig
-
-    # with ui.card():
-
-    #     @render_plotly
-    #     def bar_chart_ten_least():
-    #         # Filter based on inputs
-    #         filtered_bikes_df = demo11.filter_bikes(
-    #             bikes_gdf, 
-    #             {
-    #                 bike_type_field: input.bike_type(),
-    #                 docking_status_field: input.docking_status(),
-    #             }
-    #         )
-    #         # Attach bikes to neighborhoods
-    #         bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df).reset_index()
-
-    #         # Plot 10 lowest        
-    #         fig = px.bar(
-    #             bikes_per_nbhd_df.tail(10), 
-    #             x='nbhd', 
-    #             y='bikes', 
-    #             color='eea',
-    #             color_continuous_scale=[other_color, eea_color],
-    #         )
-    #         fig.update_layout(coloraxis_showscale=False)
-    #         fig.update_xaxes(tickangle=-90)
-    #         return fig
-    
+    with ui.card():
+        @render_plotly
+        def bar_chart_ten_least():
+            return base_bar_chart(n=10, tail=True)    
 
 with ui.layout_columns():
 
     with ui.card():
-        
         @render_widget  
         def map():
+            return base_map()
         
-            # Filter based on inputs
-            filtered_bikes_df = demo11.filter_bikes(
-                bikes_gdf, 
-                {
-                    bike_type_field: input.bike_type(),
-                    docking_status_field: input.docking_status(),
-                }
-            )
             
-            # Attach bikes to neighborhoods
-            bikes_per_nbhd_df = demo11.count_bikes_per_nbhd(filtered_bikes_df)
-            nbhds_with_bike_counts_gdf = demo11.attach_counts_to_nbhd_points(bikes_per_nbhd_df, nbhds_gdf) 
-        
-            # Build map
-            m = Map(
-                basemap=basemaps.CartoDB.Positron,
-                center=(mid_lat, mid_lon), 
-                zoom=12,
-                scroll_wheel_zoom=True,
-            )  
-        
-            multiplier = 0.2
-            for nbhd in nbhds_with_bike_counts_gdf.itertuples():
-                circle_marker = CircleMarker()
-                lat = nbhd.geometry.y
-                lon = nbhd.geometry.x
-                circle_marker.location = (lat, lon)
-                radius = demo11.int_at_least_one(nbhd.bikes * multiplier)
-                circle_marker.radius = radius
-                if nbhd.eea == 1:
-                    circle_marker.color = eea_color
-                else:
-                    circle_marker.color = other_color
-                circle_marker.fill_color = "#ffffff00"
-                circle_marker.weight=1
-                m.add(circle_marker)
-                
-            return m

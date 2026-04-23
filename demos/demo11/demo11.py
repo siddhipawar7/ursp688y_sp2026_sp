@@ -26,7 +26,7 @@ def load_nbhds():
     return nbhds_gdf
 
 def load_bike_data():
-    """Load bikes from CABI API and return as geodataframe
+    """Load bikes and stations from CABI API and return as two geodataframes
     """
     bikes_json = requests.get('https://gbfs.lyft.com/gbfs/2.3/dca-cabi/en/free_bike_status.json').json()
     station_status_json = requests.get('https://gbfs.lyft.com/gbfs/2.3/dca-cabi/en/station_status.json').json()
@@ -42,6 +42,7 @@ def load_bike_data():
         crs=4326
     )
     bikes_gdf['vehicle_type_id'] = bikes_gdf['vehicle_type_id'].astype(int)
+    
     # Stations (includes both e-bikes and regular bikes)
     station_status_df = pd.DataFrame(station_status_json['data']['stations'])    
     station_info_df = pd.DataFrame(station_info_json['data']['stations'])
