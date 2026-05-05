@@ -1,0 +1,1 @@
+Please commit files for your final project to this directory in a folder named with your first name (e.g., `chester`).
