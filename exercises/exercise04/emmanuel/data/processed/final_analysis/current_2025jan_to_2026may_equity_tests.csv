@@ -1,0 +1,4 @@
+test,metric,statistic,p_value,high_need_mean,other_tracts_mean,interpretation_note
+Welch t-test: high need vs all other tracts,weekday_total_trips_accessible_change,-0.9444522320907712,0.34768974253420637,-64.39655172413794,3.028735632183908,Positive difference means high-need tracts gained more scheduled weekday trips.
+Pearson correlation,weekday_total_trips_accessible_change,-0.04128627312001132,0.5314959911272464,,,Positive correlation means higher transit need is associated with larger service gains.
+Spearman rank correlation,weekday_total_trips_accessible_change,-0.08895167364245407,0.17694175154577316,,,Positive correlation means higher transit need rank is associated with larger service-gain rank.

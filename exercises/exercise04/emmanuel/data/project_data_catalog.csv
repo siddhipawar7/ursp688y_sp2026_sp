@@ -1,0 +1,6 @@
+dataset,path,rows_or_features,source,notes
+Ride On GTFS snapshots,data/raw/gtfs/,7 feeds,Montgomery County Current and Archived GTFS files,"Includes pre-implementation, Phase 1, follow-up, and current published feeds."
+GTFS feed inventory,data/processed/gtfs/gtfs_feed_inventory.csv,7,Derived from GTFS feed_info and table row counts,Use this to choose pre/post comparison feeds with explicit dates.
+Stop-level GTFS service metrics,data/processed/gtfs/stop_service_metrics_*.csv,one row per served stop per feed,"Derived from GTFS trips, stop_times, stops, and calendar tables","Measures scheduled service supply, not rider experience."
+ACS Transit Need Index,data/processed/acs/acs_transit_need_2024_montgomery_tracts.csv,232,2020-2024 ACS 5-year profile and detailed tables,"Index averages z-scores for no-vehicle households, poverty, age 65+, and disability. Requires Census API access."
+Montgomery County Census tracts,data/processed/geography/montgomery_tracts_2024.geojson,232,2024 TIGER/Line tract boundaries for Maryland,"Filtered to Montgomery County, Maryland."
